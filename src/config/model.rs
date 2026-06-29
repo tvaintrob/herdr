@@ -822,6 +822,8 @@ pub struct UiConfig {
     pub hide_tab_bar_when_single_tab: bool,
     /// Position of the tab bar in the desktop layout. Default: top.
     pub tab_bar_position: TabBarPosition,
+    /// Show the prefix-mode hint bar and dim panes when prefix is active. Default: true.
+    pub prefix_hint: bool,
     /// Agent sidebar ordering. Saved values are "spaces" or "priority". Default: "spaces".
     pub agent_panel_sort: AgentPanelSortConfig,
     /// Expanded sidebar row composition.
@@ -1021,6 +1023,7 @@ impl Default for UiConfig {
             show_agent_labels_on_pane_borders: false,
             hide_tab_bar_when_single_tab: false,
             tab_bar_position: TabBarPosition::Top,
+            prefix_hint: true,
             agent_panel_sort: AgentPanelSortConfig::Spaces,
             sidebar: SidebarConfig::default(),
             accent: "cyan".into(),
