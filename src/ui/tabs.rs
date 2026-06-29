@@ -391,6 +391,33 @@ pub(super) fn render_tab_bar(app: &AppState, frame: &mut Frame, area: Rect) {
                 .set_style(Style::default().fg(p.overlay0));
         }
     }
+
+    let (hour, minute) = local_hhmm();
+    let clock = format!("{hour:02}:{minute:02} ");
+    let clock_width = clock.len() as u16;
+    if area.width >= clock_width {
+        let clock_x = area.x + area.width - clock_width;
+        let clock_rect = Rect::new(clock_x, area.y, clock_width, 1);
+        frame.render_widget(
+            Paragraph::new(clock).style(Style::default().fg(p.overlay1).bg(p.panel_bg)),
+            clock_rect,
+        );
+    }
+}
+
+fn local_hhmm() -> (u32, u32) {
+    #[cfg(unix)]
+    {
+        let mut t: libc::time_t = 0;
+        unsafe { libc::time(&mut t) };
+        let mut tm = unsafe { std::mem::zeroed::<libc::tm>() };
+        unsafe { libc::localtime_r(&t, &mut tm) };
+        (tm.tm_hour as u32, tm.tm_min as u32)
+    }
+    #[cfg(windows)]
+    {
+        (0, 0)
+    }
 }
 
 #[cfg(test)]
