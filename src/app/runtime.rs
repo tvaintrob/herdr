@@ -313,6 +313,19 @@ impl App {
 
         changed |= self.expire_due_metadata(now);
 
+        if self.state.active.is_some() {
+            if let Some(deadline) = self.next_clock_tick {
+                if now >= deadline {
+                    self.next_clock_tick = Some(now + Duration::from_secs(60));
+                    changed = true;
+                }
+            } else {
+                self.next_clock_tick = Some(now + Duration::from_secs(60));
+            }
+        } else {
+            self.next_clock_tick = None;
+        }
+
         if geometry_dirty || resized {
             self.pending_agent_resume_deadline = None;
         } else {
@@ -603,6 +616,7 @@ impl App {
             self.agent_metadata_deadline,
             self.pending_agent_resume_deadline,
             self.session_save_deadline,
+            self.next_clock_tick,
             self.selection_autoscroll_deadline,
             self.selection_highlight_clear_deadline,
             render_deadline,
