@@ -328,7 +328,7 @@ impl App {
 
         changed |= self.expire_due_metadata(now);
 
-        if self.state.active.is_some() {
+        if self.state.show_clock && self.state.active.is_some() {
             if let Some(deadline) = self.next_clock_tick {
                 if now >= deadline {
                     self.next_clock_tick = Some(now + Duration::from_secs(60));
