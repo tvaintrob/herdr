@@ -392,16 +392,18 @@ pub(super) fn render_tab_bar(app: &AppState, frame: &mut Frame, area: Rect) {
         }
     }
 
-    let (hour, minute) = local_hhmm();
-    let clock = format!("{hour:02}:{minute:02} ");
-    let clock_width = clock.len() as u16;
-    if area.width >= clock_width {
-        let clock_x = area.x + area.width - clock_width;
-        let clock_rect = Rect::new(clock_x, area.y, clock_width, 1);
-        frame.render_widget(
-            Paragraph::new(clock).style(Style::default().fg(p.overlay1).bg(p.panel_bg)),
-            clock_rect,
-        );
+    if app.show_clock {
+        let (hour, minute) = local_hhmm();
+        let clock = format!("{hour:02}:{minute:02} ");
+        let clock_width = clock.len() as u16;
+        if area.width >= clock_width {
+            let clock_x = area.x + area.width - clock_width;
+            let clock_rect = Rect::new(clock_x, area.y, clock_width, 1);
+            frame.render_widget(
+                Paragraph::new(clock).style(Style::default().fg(p.overlay1).bg(p.panel_bg)),
+                clock_rect,
+            );
+        }
     }
 }
 
