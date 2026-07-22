@@ -692,10 +692,7 @@ impl KeysConfig {
         copy_effective_action_field!(next_workspace, keybinds.next_workspace);
         copy_effective_action_field!(previous_agent, keybinds.previous_agent);
         copy_effective_action_field!(next_agent, keybinds.next_agent);
-        copy_effective_action_field!(
-            next_blocked_agent,
-            keybinds.next_blocked_agent
-        );
+        copy_effective_action_field!(next_blocked_agent, keybinds.next_blocked_agent);
         copy_effective_indexed_field!(focus_agent, keybinds.focus_agent);
         copy_user_field!(remote_image_paste);
         copy_effective_action_field!(new_tab, keybinds.new_tab);

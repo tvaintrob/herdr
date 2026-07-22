@@ -350,6 +350,12 @@
           "description": "Focus the next agent shown in the agent panel. Unset by default."
         },
         {
+          "key": "keys.next_blocked_agent",
+          "type": "keybinding",
+          "default": "unset",
+          "description": "Focus the next agent in the blocked state, cycling through the agent panel. Unset by default."
+        },
+        {
           "key": "keys.focus_agent",
           "type": "keybinding",
           "default": "unset",
@@ -675,7 +681,10 @@
           "type": "enum",
           "default": "top",
           "description": "Position of the tab bar in the desktop layout.",
-          "values": ["top", "bottom"]
+          "values": [
+            "top",
+            "bottom"
+          ]
         },
         {
           "key": "ui.show_clock",

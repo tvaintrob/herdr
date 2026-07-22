@@ -283,9 +283,7 @@ impl App {
                 }
             }
             NavigateAction::NextBlockedAgent => {
-                if let Some((idx, ws_idx, pane_id)) =
-                    self.next_blocked_agent_entry()
-                {
+                if let Some((idx, ws_idx, pane_id)) = next_blocked_agent_entry(&self.state) {
                     self.focus_pane_internal_via_api(ws_idx, pane_id);
                     self.state.ensure_agent_panel_entry_visible(idx);
                     leave_navigate_mode(&mut self.state);
@@ -743,36 +741,6 @@ impl App {
         };
         let target = entries.get(next_idx)?;
         Some((next_idx, target.ws_idx, target.pane_id))
-    }
-
-    fn next_blocked_agent_entry(
-        &self,
-    ) -> Option<(usize, usize, crate::layout::PaneId)> {
-        let entries = crate::ui::agent_panel_entries(&self.state);
-        let blocked: Vec<_> = entries
-            .iter()
-            .enumerate()
-            .filter(|(_, e)| {
-                e.state == crate::detect::AgentState::Blocked
-            })
-            .collect();
-        if blocked.is_empty() {
-            return None;
-        }
-        let focused = self
-            .state
-            .active
-            .and_then(|idx| self.state.workspaces.get(idx))
-            .and_then(crate::workspace::Workspace::focused_pane_id);
-        let current_pos = blocked
-            .iter()
-            .position(|(_, entry)| Some(entry.pane_id) == focused);
-        let next = match current_pos {
-            Some(pos) => (pos + 1) % blocked.len(),
-            None => 0,
-        };
-        let (panel_idx, entry) = blocked[next];
-        Some((panel_idx, entry.ws_idx, entry.pane_id))
     }
 
     fn pass_through_key_to_focused_pane(&mut self, key: TerminalKey) -> bool {
@@ -1654,6 +1622,13 @@ pub(super) fn execute_navigate_action_in_context(
             state.next_agent();
             leave_navigate_mode(state);
         }
+        NavigateAction::NextBlockedAgent => {
+            if let Some((idx, _, _)) = next_blocked_agent_entry(state) {
+                if state.focus_agent_entry(idx) {
+                    leave_navigate_mode(state);
+                }
+            }
+        }
         NavigateAction::NewTab => {
             if state.active.is_some() {
                 if state.prompt_new_tab_name {
@@ -1763,6 +1738,31 @@ pub(super) fn execute_navigate_action_in_context(
     }
 
     finish_action_context(state, context, previous_mode);
+}
+
+fn next_blocked_agent_entry(state: &AppState) -> Option<(usize, usize, crate::layout::PaneId)> {
+    let entries = crate::ui::agent_panel_entries(state);
+    let blocked: Vec<_> = entries
+        .iter()
+        .enumerate()
+        .filter(|(_, e)| e.state == crate::detect::AgentState::Blocked)
+        .collect();
+    if blocked.is_empty() {
+        return None;
+    }
+    let focused = state
+        .active
+        .and_then(|idx| state.workspaces.get(idx))
+        .and_then(crate::workspace::Workspace::focused_pane_id);
+    let current_pos = blocked
+        .iter()
+        .position(|(_, entry)| Some(entry.pane_id) == focused);
+    let next = match current_pos {
+        Some(pos) => (pos + 1) % blocked.len(),
+        None => 0,
+    };
+    let (panel_idx, entry) = blocked[next];
+    Some((panel_idx, entry.ws_idx, entry.pane_id))
 }
 
 fn workspace_action_target(state: &AppState, context: ActionContext) -> Option<usize> {

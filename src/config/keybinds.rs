@@ -618,11 +618,7 @@ impl Config {
             apply_action!(keybinds.next_workspace, next_workspace, source);
             apply_action!(keybinds.previous_agent, previous_agent, source);
             apply_action!(keybinds.next_agent, next_agent, source);
-            apply_action!(
-                keybinds.next_blocked_agent,
-                next_blocked_agent,
-                source
-            );
+            apply_action!(keybinds.next_blocked_agent, next_blocked_agent, source);
             apply_indexed!(
                 keybinds.focus_agent,
                 focus_agent,
