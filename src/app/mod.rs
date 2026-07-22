@@ -2776,7 +2776,7 @@ mod tests {
 
         std::fs::write(
             &path,
-            "[ui.sidebar.agents]\nrows = [[\"state_icon\", \"$summary\"]]\nrow_gap = 1\n\n[ui.sidebar.agents.rows_by_agent]\nclaude = [[\"terminal_title_stripped\"]]\n\n[ui.sidebar.spaces]\nrows = [[\"workspace\", \"$jj_status\"]]\nrow_gap = 3\n",
+            "[ui.sidebar.agents]\nrows = [[\"state_icon\", \"$summary\"]]\nrow_gap = 1\n\n[ui.sidebar.agents.rows_by_agent]\nclaude = [[\"terminal_title_stripped\"]]\n\n[ui.sidebar.spaces]\nrows = [[\"workspace\", \"$jj_status\"]]\nrow_gap = 3\nworktree_row_gap = 1\n",
         )
         .unwrap();
         app.state.agent_panel_scroll = 5;
@@ -2806,6 +2806,7 @@ mod tests {
             ]]
         );
         assert_eq!(app.state.sidebar_spaces.row_gap, 3);
+        assert_eq!(app.state.sidebar_spaces.worktree_row_gap, 1);
 
         let previous_agents = app.state.sidebar_agents.clone();
         std::fs::write(

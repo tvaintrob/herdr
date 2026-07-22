@@ -7,6 +7,7 @@ use crate::detect::Agent;
 const MAX_SIDEBAR_ROWS: usize = 16;
 const MAX_SIDEBAR_TOKENS_PER_ROW: usize = 16;
 const DEFAULT_SIDEBAR_ROW_GAP: u16 = 0;
+const DEFAULT_SIDEBAR_WORKTREE_ROW_GAP: u16 = 0;
 
 fn deserialize_sidebar_rows<'de, D, T>(deserializer: D) -> Result<Vec<Vec<T>>, D::Error>
 where
@@ -410,6 +411,7 @@ pub struct SpacesSidebarConfig {
     #[serde(deserialize_with = "deserialize_sidebar_rows")]
     pub rows: SpaceSidebarRows,
     pub row_gap: u16,
+    pub worktree_row_gap: u16,
 }
 
 impl Default for SpacesSidebarConfig {
@@ -420,6 +422,7 @@ impl Default for SpacesSidebarConfig {
                 vec![SpaceSidebarToken::Branch, SpaceSidebarToken::GitStatus],
             ],
             row_gap: DEFAULT_SIDEBAR_ROW_GAP,
+            worktree_row_gap: DEFAULT_SIDEBAR_WORKTREE_ROW_GAP,
         }
     }
 }
@@ -459,6 +462,7 @@ mod tests {
             ]
         );
         assert_eq!(config.spaces.row_gap, 0);
+        assert_eq!(config.spaces.worktree_row_gap, 0);
     }
 
     #[test]
@@ -475,6 +479,7 @@ claude = [["terminal_title_stripped"], ["agent", "$model"]]
 [ui.sidebar.spaces]
 rows = [["workspace"], ["$jj_status"]]
 row_gap = 3
+worktree_row_gap = 2
 "#,
         )
         .expect("sidebar token config");
@@ -511,6 +516,7 @@ row_gap = 3
             vec![SpaceSidebarToken::Custom("jj_status".into())]
         );
         assert_eq!(config.ui.sidebar.spaces.row_gap, 3);
+        assert_eq!(config.ui.sidebar.spaces.worktree_row_gap, 2);
     }
 
     #[test]

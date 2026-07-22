@@ -730,13 +730,19 @@
           "key": "ui.sidebar.spaces.row_gap",
           "type": "integer",
           "default": "0",
-          "description": "Blank terminal rows between expanded Space sidebar entries. Set to 1 to restore the previous spacing. Consecutive indented worktree children remain packed as one group."
+          "description": "Blank terminal rows between expanded full Space sidebar entries. Set to 1 to restore the previous spacing. Nested worktree children use ui.sidebar.spaces.worktree_row_gap instead."
         },
         {
           "key": "ui.sidebar.spaces.rows",
           "type": "list of token rows",
           "default": "[[\"state_icon\", \"workspace\"], [\"branch\", \"git_status\"]]",
           "description": "Expanded Space sidebar layout. Entries may be token strings or inline { token, fg, bold, dim } style tables. Supports built-in and $name metadata tokens; at most 16 rows and 16 tokens per row."
+        },
+        {
+          "key": "ui.sidebar.spaces.worktree_row_gap",
+          "type": "integer",
+          "default": "0",
+          "description": "Blank terminal rows between nested worktree entries inside a Space group. Full Space entries use ui.sidebar.spaces.row_gap instead."
         },
         {
           "key": "ui.accent",

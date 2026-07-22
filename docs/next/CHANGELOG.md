@@ -15,6 +15,7 @@
 - Added `ui.sidebar_start_collapsed` to launch Herdr with the sidebar collapsed. (#1463)
 - Added `ui.prompt_new_workspace_name` to ask for a workspace name before interactive TUI creation.
 - Added macOS support for the `HERDR_AGENT=<agent>` foreground-process hint, allowing agents hidden behind host-visible wrappers such as `nono` to use the named agent's screen manifest. (#679)
+- Added `ui.sidebar.spaces.worktree_row_gap` for spacing between nested worktree entries inside a Space group; `ui.sidebar.spaces.row_gap` now only applies between full Space entries.
 
 ### Changed
 - Agent commands now accept only a unique live agent name or the pane ID currently hosting that agent. Names are cleared when the occupant exits, is released, or is replaced. The old top-level `wait` commands were replaced by `agent wait` and `pane wait-output`, and `agent send` was replaced by `agent send-keys`.
